@@ -417,10 +417,70 @@ $$
 ### <font color=Aqua>$\small Likelihood\ Testing$ \<似然检验\></font>
 ####<font color=Chartreuse>$\small Score\ Function\ \&\ Fisher\ Information$</font>
 - 得分向量与 $\text{Fisher}$ 信息阵与似然函数相关，下面将给出相关定义。
+  - 单参数 
   $$
   \begin{aligned}
-  &\text{Likelihood Function}: &L(\theta)=\prod_ip(x_i,\theta)
-  &\text{Score Function}: &U(X;\theta)=\cfrac{\partial}{\partial\theta}L(\theta)
+    \text{Likelihood Function: }\quad L(\theta)&=\prod_ip(x_i,\theta)\\
+    l(\theta)&=\ln L(\theta)\\
+    \text{Score Function: }\quad U(\theta)&=\cfrac{\partial}{\partial\theta}l(\theta)\\
+    \text{Fisher Information: }\quad I(\theta)&=-E_X(\cfrac{\partial}{\partial\theta}U(\theta))\\&=-E_X(\cfrac{\partial^2}{\partial\theta^2}l(\theta))
   \end{aligned}
   $$
-    
+  - 多参数 
+  $$
+  \begin{aligned}
+    \text{Likelihood Function: }\quad L(\vec{\theta})&=\prod_ip(x_i,\vec{\theta})\\
+    l(\vec{\theta})&=\ln L(\vec{\theta})\\
+    \text{Score Function: }\quad U(\vec{\theta})&=\cfrac{\partial}{\partial\theta_i}l(\vec{\theta})\\
+    &=\nabla_{\theta}l(\vec{\theta})\\
+    \text{Fisher Information: }\quad I(\vec{\theta})&=-E_X(\cfrac{\partial}{\partial\theta_j}U(\vec{\theta}))\\
+    &=-E_X(\nabla_{\theta}U(\vec{\theta}))
+    \\&=-E_X(\cfrac{\partial^2}{\partial\theta_i\theta_j}l(\vec{\theta}))
+    \\&\text{(Matrix)}
+  \end{aligned}
+  $$
+
+- 下面给出几条 **<font color=Gold>重要结论</font>** ：
+  1. $U(\theta)$ 其实也是关于 $X$ 的函数
+  2. $E_X\Big[U(\theta)\Big]=0$
+  3. $Var_X\Big[U(\theta)\Big]=I(\theta)$
+  4. $\text{if: X is iid}\implies \\U(\theta)=\sum_iU(x_i;\theta)\;\&\;I(\theta)=\sum_iI_i(\theta)$
+  5. 在计算时，可以使用近似值 $\tilde{I}(\theta)$ 替代 $I(\theta)$
+  $\tilde{I}(X)\overset{E(x)=\frac{1}{n}\sum_xx_i}{=\!=\!=\!=\!=\!=\!=}\cfrac{\partial}{\partial\theta}U(-E_X(X);\theta)$
+
+####<font color=Chartreuse>$\small Score\ Test$</font>
+- $H_{0}: \theta=\theta_{0}$
+- 统计量：<font color=Gold>(理论来自于 $U(x;\theta)$ 的渐进分布)</font>
+  $$
+  \begin{aligned}
+    \cfrac{U(x;\theta)}{\sqrt{I(\theta)}}&\overset{d}{\longrightarrow}N(0,1)\quad\text{单参数}\\
+    U(x;\vec{\theta})^TI^{-1}(\vec{\theta})\ U(x;\vec{\theta})&\overset{d}{\longrightarrow}\chi^2(p)\quad\text{多参数}
+  \end{aligned}
+  $$
+
+####<font color=Chartreuse>$\small Wald\ Test$</font>
+- $H_{0}: \theta=\theta_{0}$
+- 统计量：<font color=Gold>(理论来自于 $U(x;\theta)$ 的 Taylor 一阶展开)</font>
+  $$
+  \begin{aligned}
+    \cfrac{(\theta-\theta_0)}{\sqrt{I(\theta)}}&\overset{d}{\longrightarrow}N(0,1)\quad\text{单参数}\\
+    (\vec{\theta}-\vec{\theta_0})^TI^{-1}(\vec{\theta})\ (\vec{\theta}-\vec{\theta_0})&\overset{d}{\longrightarrow}\chi^2(p)\quad\text{多参数}
+  \end{aligned}
+  $$
+- $U(x;\theta)$ 的 Taylor 一阶展开:
+  $$U(x;\theta)\approx U(x;\hat{\theta})-I(\hat{\theta})(\theta-\hat{\theta})\\
+  \implies I(\hat{\theta})(\theta-\hat{\theta})\overset{d}{\longrightarrow} N(0,I(\hat{\theta}))$$
+####<font color=Chartreuse>$\small Likelihood\ Ratio\ Test$</font>
+- $H_{0}: \theta=\theta_{0}$
+- 统计量：<font color=Gold>(理论来自于 $l(\theta)$ 的 Taylor 二阶展开)</font>
+   $$
+    -2(l(\theta_0)-l(\hat{\theta}))\overset{d}{\longrightarrow}\chi^2(p)
+  $$
+- $l(\theta)$ 的 Taylor 二阶展开:
+  $$
+  l(\theta)=l(\hat{\theta})+U(\hat{\theta})(\theta-\hat{\theta})-\frac{1}{2}I(\hat{\theta})(\theta-\hat{\theta})^2\\
+  \implies U(\hat{\theta})(\theta-\hat{\theta})=0\implies\\
+  l(\theta)=l(\hat{\theta})-\frac{1}{2}I(\hat{\theta})(\theta-\hat{\theta})^2\\
+  \implies I(\hat{\theta})(\theta-\hat{\theta})^2\overset{d}{\longrightarrow} N(0,I(\hat{\theta}))\\
+  \implies (\theta-\hat{\theta})^TI(\hat{\theta})^{-1}\ (\theta-\hat{\theta})\overset{d}{\longrightarrow}\chi^2(p)
+  $$
