@@ -57,6 +57,7 @@ $$
 #### <font color=Chartreuse>$\small Cumulative\ Hazard\ Function\quad\Lambda(t)$ \<累积风险函数\></font>
 $$\Lambda(t)=\int_0^t\lambda(s)ds$$
 - 量化事件在 $t$ 时间点前的风险和
+- 有一个重要结论：$S(t)=\exp\{-\Lambda(t)\}$
 
 #### <font color=Chartreuse>$\small Mean\  Residual\ Life\quad r(t)$ \<累积风险函数\></font>
 $$r(t)=\mathit{E}(T-t|T\geq t)=\cfrac{\int_t^{\infin}S(u)du}{S(t)}$$
@@ -445,8 +446,9 @@ $$
   2. $E_X\Big[U(\theta)\Big]=0$
   3. $Var_X\Big[U(\theta)\Big]=I(\theta)$
   4. $\text{if: X is iid}\implies \\U(\theta)=\sum_iU(x_i;\theta)\;\&\;I(\theta)=\sum_iI_i(\theta)$
-  5. 在计算时，可以使用近似值 $\tilde{I}(\theta)$ 替代 $I(\theta)$
-  $\tilde{I}(X)\overset{E(x)=\frac{1}{n}\sum_xx_i}{=\!=\!=\!=\!=\!=\!=}\cfrac{\partial}{\partial\theta}U(-E_X(X);\theta)$
+  5. 在计算时，可以使用近似值 $\tilde{I}(\theta)$ 替代 $I(\theta)\\\tilde{I}(X)\overset{E(x)=\frac{1}{n}\sum_xx_i}{=\!=\!=\!=\!=\!=\!=}\cfrac{\partial}{\partial\theta}U(-E_X(X);\theta)$
+  6. 由 $C-R$ 不等式 $Var[g(\hat{X})]\geq \cfrac{g'(\theta)}{I(\theta)}$ 可知, 当 $g(\hat{X})=\theta$ 时，有 $Var[\theta]\geq \cfrac{1}{I(\theta)}$, <font color=gold>即 $Var[\hat{\theta}_{MLE}]=I^{-1}(\beta)$</font>
+
 
 ####<font color=Chartreuse>$\small Score\ Test$</font>
 - $H_{0}: \theta=\theta_{0}$
@@ -454,7 +456,7 @@ $$
   $$
   \begin{aligned}
     \cfrac{U(\theta_0)}{\sqrt{I(\theta_0)}}&\overset{d}{\longrightarrow}N(0,1)\quad\text{单参数}\\
-    U(\vec{\theta_0})^TI^{-1}(\vec{\theta_0})\ U(\vec{\theta_0})&\overset{d}{\longrightarrow}\chi^2(p)\quad\text{多参数}
+    U(\vec{\theta_0})^TI(\vec{\theta_0})\ U(\vec{\theta_0})&\overset{d}{\longrightarrow}\chi^2(p)\quad\text{多参数}
   \end{aligned}
   $$
 
@@ -463,8 +465,8 @@ $$
 - 统计量：<font color=Gold>(理论来自于 $U(x;\theta)$ 的 Taylor 一阶展开)</font>
   $$
   \begin{aligned}
-    \cfrac{(\hat{\theta}-\theta_0)}{\sqrt{I(\theta)}}&\overset{d}{\longrightarrow}N(0,1)\quad\text{单参数}\\
-    (\hat{\theta}-\vec{\theta_0})^TI^{-1}(\hat{\theta})\ (\hat{\theta}-\vec{\theta_0})&\overset{d}{\longrightarrow}\chi^2(p)\quad\text{多参数}
+    \sqrt{I(\theta)}(\hat{\theta}-\theta_0)&\overset{d}{\longrightarrow}N(0,1)\quad\text{单参数}\\
+    (\hat{\theta}-\vec{\theta_0})^TI(\hat{\theta})\ (\hat{\theta}-\vec{\theta_0})&\overset{d}{\longrightarrow}\chi^2(p)\quad\text{多参数}
   \end{aligned}
   $$
 - $U(\theta)$ 的 Taylor 一阶展开:
@@ -479,10 +481,8 @@ $$
 - $l(\theta)$ 的 Taylor 二阶展开:
   $$
   l(\theta)=l(\hat{\theta})+U(\hat{\theta})(\theta-\hat{\theta})-\frac{1}{2}I(\hat{\theta})(\theta-\hat{\theta})^2\\
-  \implies U(\hat{\theta})(\theta-\hat{\theta})=0\implies\\
-  l(\theta)=l(\hat{\theta})-\frac{1}{2}I(\hat{\theta})(\theta-\hat{\theta})^2\\
-  \implies I(\hat{\theta})(\theta-\hat{\theta})^2\overset{d}{\longrightarrow} N(0,I(\hat{\theta}))\\
-  \implies (\theta-\hat{\theta})^TI(\hat{\theta})^{-1}\ (\theta-\hat{\theta})\overset{d}{\longrightarrow}\chi^2(p)
+  \implies U(\hat{\theta})=0\quad\textcolor{orangered}{[MLE要求]}\implies\\
+  \implies (\theta-\hat{\theta})^TI(\hat{\theta})\ (\theta-\hat{\theta})\overset{d}{\longrightarrow}\chi^2(p)
   $$
 #### <font color=Gold>三种检验方法在大样本情况下渐近等价</font> 
 
@@ -493,11 +493,11 @@ $$
 ####<font color=Chartreuse>$\small Newton-Raphson\  method$\<牛顿迭代法\></font>
 - 在比例风险模型中，由于指数函数的存在，使我们难以使用最小二乘来进行回归。因此我们将使用极大似然估计的方法对比例风险模型进行求解。
   $$
-  \text{MLE}\implies\argmax_{\theta} L(\theta)\implies\cfrac{\partial}{\partial\theta}\ln L(\theta)=0\implies U(\theta)=0
+  \text{MLE}\implies\argmax_{\theta} L(\theta)\implies\cfrac{\partial}{\partial\theta}\ln L(\theta)=0\\\implies U(\theta)=0
   $$
   $$
   \text{进行Taylor展开: }\quad0=U(\theta)\approx U(\hat{\theta})-I(\hat{\theta})(\theta-\hat{\theta})\\
-  \implies \hat{\theta_{i+1}}\coloneqq\hat{\theta_i}+I^{-1}(\hat{\theta_i})U(\hat{\theta_i})
+  \implies \hat{\theta}^{(i+1)}\coloneqq\hat{\theta^{(i)}}+I^{-1}(\hat{\theta}^{(i)})U(\hat{\theta}^{(i)})
   $$
 
 ####<font color=Chartreuse>$\small Exponential\ Distribution$\<指数分布\></font>
@@ -513,9 +513,37 @@ $$
   $$
   \lambda_i(t)=\lambda(t)\exp\{x_i^T\beta\},\quad\lambda(t)\geq 0
   $$
-
+- 其中， $\lambda(t)$ 是 $t$ 时刻的基线风险，即 **<font color=gold>无协变量影响时的风险</font>**
 ####<font color=Chartreuse>$\small Exponential\ Regression\ Model$\<指数回归模型\></font>
 - 形式：
   $$
   \lambda_i(t)=\lambda\exp\{x_i^T\beta\}
   $$
+- $NR\ \text{迭代公式}$
+  $$
+  \begin{aligned}
+  \hat{\beta}^{(i+1)}&=\hat{\beta}^{(i)}+\Big(X^TWX\Big)X^T(d-\mu)\\
+  \mu&=\{t_i\cdot\exp\{x_i^T\beta\}\}_{i=1}^n\quad\text{加权的事件发生时间}\\
+  W&=diag(\mu)\\
+  d&={\delta_i}_{i=1}^n\quad\text{样本删失情况}
+  \end{aligned}
+  $$
+- 估计置信区间
+  $$
+  \because\hat{\beta}\backsim N(\beta,I^{-1}(\beta))\\
+  $$
+  $$
+  \therefore\text{置信区间为： } \hat{\beta_j}\pm I^{-1}_{jj}
+  $$
+- 参数解释：
+  $$
+  \begin{aligned}
+  \cfrac{\lambda_1}{\lambda_2}&=\cfrac{\lambda(t)\exp\{x_1^T\beta\}}{\lambda(t)\exp\{x_2^T\beta\}}=\exp\{(x_1-x_2)^T\beta\}\\&=\prod_{i=1}^p\exp\{\Delta x_i^T\beta\}
+  \end{aligned}
+  $$
+  <font color=Aqua>
+  $$
+  \text{第} i \text{个特征变动} \Delta x_i\implies\text{风险函数变化}\exp\{\Delta x_i^T\beta\}\text{倍}
+  $$
+  </font>
+  
