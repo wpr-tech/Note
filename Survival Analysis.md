@@ -416,5 +416,11 @@ $$
 
 ### <font color=Aqua>$\small Likelihood\ Testing$ \<似然检验\></font>
 ####<font color=Chartreuse>$\small Score\ Function\ \&\ Fisher\ Information$</font>
-- 得分向量
+- 得分向量与 $\text{Fisher}$ 信息阵与似然函数相关，下面将给出相关定义。
+  $$
+  \begin{aligned}
+  &\text{Likelihood Function}: &L(\theta)=\prod_ip(x_i,\theta)
+  &、text{Score Function}: &U(X;\theta)=\cfrac{\partial}{\partial\theta}L(\theta)
+  \end{aligned}
+  $$
     
