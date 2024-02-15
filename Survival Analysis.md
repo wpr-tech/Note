@@ -414,6 +414,7 @@ $$
 
 ---
 
-
+### <font color=Aqua>$\small Likelihood\ Testing$ \<分组检验\></font>
+####<font color=Chartreuse>$\small Score\ Function&$ \<列联表\></font>
 
     
