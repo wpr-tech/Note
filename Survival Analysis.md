@@ -414,7 +414,7 @@ $$
 
 ---
 
-### <font color=Aqua>$\small Likelihood\ Testing$ \<分组检验\></font>
-####<font color=Chartreuse>$\small Score\ Function&$ \<列联表\></font>
-
+### <font color=Aqua>$\small Likelihood\ Testing$ \<似然检验\></font>
+####<font color=Chartreuse>$\small Score\ Function\ \&\ Fisher\ Information$</font>
+- 得分向量
     
