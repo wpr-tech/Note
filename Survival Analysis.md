@@ -453,8 +453,8 @@ $$
 - 统计量：<font color=Gold>(理论来自于 $U(x;\theta)$ 的渐进分布)</font>
   $$
   \begin{aligned}
-    \cfrac{U(x;\theta)}{\sqrt{I(\theta)}}&\overset{d}{\longrightarrow}N(0,1)\quad\text{单参数}\\
-    U(x;\vec{\theta})^TI^{-1}(\vec{\theta})\ U(x;\vec{\theta})&\overset{d}{\longrightarrow}\chi^2(p)\quad\text{多参数}
+    \cfrac{U(\theta_0)}{\sqrt{I(\theta_0)}}&\overset{d}{\longrightarrow}N(0,1)\quad\text{单参数}\\
+    U(\vec{\theta_0})^TI^{-1}(\vec{\theta_0})\ U(\vec{\theta_0})&\overset{d}{\longrightarrow}\chi^2(p)\quad\text{多参数}
   \end{aligned}
   $$
 
@@ -463,12 +463,12 @@ $$
 - 统计量：<font color=Gold>(理论来自于 $U(x;\theta)$ 的 Taylor 一阶展开)</font>
   $$
   \begin{aligned}
-    \cfrac{(\theta-\theta_0)}{\sqrt{I(\theta)}}&\overset{d}{\longrightarrow}N(0,1)\quad\text{单参数}\\
-    (\vec{\theta}-\vec{\theta_0})^TI^{-1}(\vec{\theta})\ (\vec{\theta}-\vec{\theta_0})&\overset{d}{\longrightarrow}\chi^2(p)\quad\text{多参数}
+    \cfrac{(\hat{\theta}-\theta_0)}{\sqrt{I(\theta)}}&\overset{d}{\longrightarrow}N(0,1)\quad\text{单参数}\\
+    (\hat{\theta}-\vec{\theta_0})^TI^{-1}(\hat{\theta})\ (\hat{\theta}-\vec{\theta_0})&\overset{d}{\longrightarrow}\chi^2(p)\quad\text{多参数}
   \end{aligned}
   $$
-- $U(x;\theta)$ 的 Taylor 一阶展开:
-  $$U(x;\theta)\approx U(x;\hat{\theta})-I(\hat{\theta})(\theta-\hat{\theta})\\
+- $U(\theta)$ 的 Taylor 一阶展开:
+  $$U(\theta)\approx U(\hat{\theta})-I(\hat{\theta})(\theta-\hat{\theta})\\
   \implies I(\hat{\theta})(\theta-\hat{\theta})\overset{d}{\longrightarrow} N(0,I(\hat{\theta}))$$
 ####<font color=Chartreuse>$\small Likelihood\ Ratio\ Test$</font>
 - $H_{0}: \theta=\theta_{0}$
@@ -483,4 +483,39 @@ $$
   l(\theta)=l(\hat{\theta})-\frac{1}{2}I(\hat{\theta})(\theta-\hat{\theta})^2\\
   \implies I(\hat{\theta})(\theta-\hat{\theta})^2\overset{d}{\longrightarrow} N(0,I(\hat{\theta}))\\
   \implies (\theta-\hat{\theta})^TI(\hat{\theta})^{-1}\ (\theta-\hat{\theta})\overset{d}{\longrightarrow}\chi^2(p)
+  $$
+#### <font color=Gold>三种检验方法在大样本情况下渐近等价</font> 
+
+---
+
+### <font color=Aqua>$\small Proportional\ Hazard Model$ \<比例风险模型\></font>
+
+####<font color=Chartreuse>$\small Newton-Raphson\  method$\<牛顿迭代法\></font>
+- 在比例风险模型中，由于指数函数的存在，使我们难以使用最小二乘来进行回归。因此我们将使用极大似然估计的方法对比例风险模型进行求解。
+  $$
+  \text{MLE}\implies\argmax_{\theta} L(\theta)\implies\cfrac{\partial}{\partial\theta}\ln L(\theta)=0\implies U(\theta)=0
+  $$
+  $$
+  \text{进行Taylor展开: }\quad0=U(\theta)\approx U(\hat{\theta})-I(\hat{\theta})(\theta-\hat{\theta})\\
+  \implies \hat{\theta_{i+1}}\coloneqq\hat{\theta_i}+I^{-1}(\hat{\theta_i})U(\hat{\theta_i})
+  $$
+
+####<font color=Chartreuse>$\small Exponential\ Distribution$\<指数分布\></font>
+- <font size=6>$\text{pdf: } p(t)=\lambda e^{-\lambda t},\quad\text{for }t\geq 0$</font>
+
+####<font color=Chartreuse>$\small Weibull\ Distribution$\<韦布尔分布\></font>
+- <font size=6>$\text{pdf: } p(t)=\gamma\lambda(\lambda t)^{\gamma-1}e^{-(\lambda t)^{\gamma}},\quad\text{for }t\geq 0$</font>
+
+####<font color=Chartreuse>$\small Extreme\  Value\ Distribution$\<极值分布\></font>
+
+####<font color=Chartreuse>$\small Proportional\ Hazard Model$\<指数回归模型\></font>
+- 形式：
+  $$
+  \lambda_i(t)=\lambda(t)\exp\{x_i^T\beta\},\quad\lambda(t)\geq 0
+  $$
+
+####<font color=Chartreuse>$\small Exponential\ Regression\ Model$\<指数回归模型\></font>
+- 形式：
+  $$
+  \lambda_i(t)=\lambda\exp\{x_i^T\beta\}
   $$
