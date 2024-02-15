@@ -420,7 +420,7 @@ $$
   $$
   \begin{aligned}
   &\text{Likelihood Function}: &L(\theta)=\prod_ip(x_i,\theta)
-  &、text{Score Function}: &U(X;\theta)=\cfrac{\partial}{\partial\theta}L(\theta)
+  &\text{Score Function}: &U(X;\theta)=\cfrac{\partial}{\partial\theta}L(\theta)
   \end{aligned}
   $$
     
