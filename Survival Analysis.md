@@ -519,6 +519,16 @@ $$
   $$
   \lambda_i(t)=\lambda\exp\{x_i^T\beta\}
   $$
+- $\text{相关信息}$
+  $$
+  \begin{aligned}
+  \lambda_i(t)&=\lambda\exp\{x_i^T\beta\}\\
+  \Lambda_i(t)&=\lambda t\exp\{x_i^T\beta\}\\
+  S_i(t)&=\exp\Big\{-\lambda t\exp\{x_i^T\beta\}\Big\}\\
+  f_i(t)&=\lambda\exp\{x_i^T\beta\}\exp\Big\{-\lambda t\exp\{x_i^T\beta\}\Big\}\\
+  T_i&\backsim Exp(\lambda\exp\{x_i^T\beta\})
+  \end{aligned}\\
+  $$
 - $NR\ \text{迭代公式}$
   $$
   \begin{aligned}
@@ -547,3 +557,18 @@ $$
   $$
   </font>
   
+####<font color=Chartreuse>$\small Weibull\ Regression\ Model$\<韦布尔回归模型\></font>
+- 形式：
+  $$
+  \lambda_i(t)=\lambda\gamma(\lambda t)^{\gamma-1}\exp\{x_i^T\beta\}
+  $$
+- $\text{相关信息}$
+  $$
+  \begin{aligned}
+  \lambda_i(t)&=\lambda\gamma(\lambda t)^{\gamma-1}\exp\{x_i^T\beta\}\\
+  \Lambda_i(t)&=(\lambda t)^{\gamma}\exp\{x_i^T\beta\}\\
+  S_i(t)&=\exp\Big\{-(\lambda t)^{\gamma}\exp\{x_i^T\beta\}\Big\}\\
+  f_i(t)&=\lambda\gamma(\lambda t)^{\gamma-1}\exp\{x_i^T\beta\}\exp\Big\{-(\lambda t)^{\gamma}\exp\{x_i^T\beta\}\Big\}\\
+  T_i&\backsim Weibull\Big(\lambda\exp\{\cfrac{x_i^T\beta}{\gamma}\},\quad\gamma\Big)
+  \end{aligned}
+  $$
