@@ -506,8 +506,6 @@ $$
 ####<font color=Chartreuse>$\small Weibull\ Distribution$\<韦布尔分布\></font>
 - <font size=6>$\text{pdf: } p(t)=\gamma\lambda(\lambda t)^{\gamma-1}e^{-(\lambda t)^{\gamma}},\quad\text{for }t\geq 0$</font>
 
-####<font color=Chartreuse>$\small Extreme\  Value\ Distribution$\<极值分布\></font>
-
 ####<font color=Chartreuse>$\small Proportional\ Hazard Model$\<指数回归模型\></font>
 - 形式：
   $$
@@ -572,3 +570,49 @@ $$
   T_i&\backsim Weibull\Big(\lambda\exp\{\cfrac{x_i^T\beta}{\gamma}\},\quad\gamma\Big)
   \end{aligned}
   $$
+
+### <font color=Aqua>$\small Accelerated\ Failure\ Time\ Model$ \<AFT模型\></font>
+- $\text{AFT 假设:}$
+  $\text{AFT模型直接对生存时间} T \text{进行建模。但时间为非负数据}\\\text{无法用线性回归直接建模。所以要对时间进行对数变换}\\ Y=\log T\\$
+  $
+  \begin{aligned}
+  \text{AFT Model:}\quad Y&=\log T=X^T\beta+\varepsilon\\
+  T&=e^{X^T\beta+\varepsilon}=e^{X^T\beta}e^{\varepsilon}\underset{e^{\varepsilon}=T_0}{\implies}e^{X^T\beta}T_0
+  \end{aligned}\\
+  \textcolor{gold}{其中\mathit{T_0}是基线生存时间。}\text{显然 }T_0\text{ 是由 }\varepsilon\text{ 决定的，而 }\varepsilon\\\text{所服从的不同分布也决定着AFT模型的类型。}
+  $
+
+####<font color=Chartreuse>$\small Extreme\  Value\ Distribution$\<极值分布\></font>
+- $Gumbel \text{分布: (极值I型分布 or SEVD)}$
+  - $\text{此处给出的是极小值格式}$
+  <font size=6>
+  $$
+  \begin{aligned}
+  F(t)&=1-e^{-e^t}\\
+  f(t)&=e^{t-e^t}
+  \end{aligned}
+  $$  
+  </font>
+####<font color=Chartreuse>$\small Type\ of \ AFT\ Model$\<ATF模型类型\></font>
+- $\varepsilon\backsim Gumbel$
+  - $y=\log t=x^T\beta+\varepsilon\quad\text{指数回归}$
+    $$
+    \begin{aligned}
+    \varepsilon&=\log t-x^T\beta\\
+    F(t)&=1-\exp\Big\{-\exp\{\log t-x^T\beta\}\Big\}\\
+        &=1-\exp\Big\{-t\cdot\exp\{-x^T\beta\}\Big\}\\
+        &\implies\lambda=exp\{-x^T\beta\}\\
+        &\implies y\backsim Exp(\lambda)
+    \end{aligned}
+    $$
+  - $y=\log t=-\log\lambda-\frac{1}{\gamma}x^T\beta+\frac{1}{\gamma}\varepsilon\quad\text{韦布尔回归}$
+    $$
+    \begin{aligned}
+    \varepsilon&=\gamma\log t+\gamma\log\lambda+x^T\beta\\
+    F(t)&=1-\exp\Big\{-\exp\{\gamma\log t+\gamma\log\lambda\}\Big\}\\
+        &=1-\exp\Big\{-(\lambda t)^{\gamma}\exp\{x^T\beta\}\Big\}\\
+        &\implies\tilde{\lambda}=\lambda\exp\{\frac{-x^T\beta}{\gamma}\}\\
+        &\implies y\backsim Weibull(\tilde{\lambda}, \gamma)
+    \end{aligned}
+    $$
+- $\varepsilon\backsim Gumbel$
