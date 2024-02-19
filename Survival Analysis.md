@@ -488,7 +488,7 @@ $$
 
 ---
 
-### <font color=Aqua>$\small Proportional\ Hazard Model$ \<比例风险模型\></font>
+### <font color=Aqua>$\small Proportional\ Hazard\ Model$ \<比例风险模型\></font>
 
 ####<font color=Chartreuse>$\small Newton-Raphson\  method$\<牛顿迭代法\></font>
 - 在比例风险模型中，由于指数函数的存在，使我们难以使用最小二乘来进行回归。因此我们将使用极大似然估计的方法对比例风险模型进行求解。
@@ -593,7 +593,7 @@ $$
   \end{aligned}
   $$  
   </font>
-####<font color=Chartreuse>$\small Type\ of \ AFT\ Model$\<ATF模型类型\></font>
+####<font color=Chartreuse>$\small Type\ of \ AFT\ Model$\<AFT模型类型\></font>
 - $\varepsilon\backsim Gumbel$
   - $y=\log t=x^T\beta+\varepsilon\quad\text{指数回归}$
     $$
@@ -615,4 +615,37 @@ $$
         &\implies y\backsim Weibull(\tilde{\lambda}, \gamma)
     \end{aligned}
     $$
-- $\varepsilon\backsim Gumbel$
+- $\varepsilon\backsim N(0,\sigma^2)$
+  $\text{Lognormal-AFT Model}$
+
+####<font color=Chartreuse>$\small Semi\ Parametric\ AFT\ Model$\<AFT模型类型\></font>
+
+- <font color=Gold>$\text{保留线性部分的可解释性，放松残差(基线风险)的假设}$</font>
+  - $\text{Rank Statistics (秩统计量)}$
+    $$
+    \begin{aligned}
+    &\textit{if: } y_{(i)}\text{为排序后第i大的因变量; } x_{(i)}\text{为其对应的自变量; }\\
+    &rank=\sum_{i=1}^n(i-\bar{i})(x_{(i)}-\bar{x})
+    \end{aligned}
+    $$ 
+    **<font color=Gold>秩统计量展现了x与y之间的相关关系</font><font color=Orangered>(此时y的具体值不重要，重要的只有相对位置)</font>**
+  - $\text{Rank Regression}$
+  1 $\text{\small 检测的是个体死亡顺序是否的确与解释变量x无关}\\\;(使用 t_j 排序)$
+  $$
+  \begin{aligned}
+  H_0&:\beta=0\\
+  \cfrac{U^2}{V}&\backsim \chi^2_1\\
+  U&=\sum_j(x_{(j)}-\bar{x}_{(j)})\\
+  V&=\sum_j(x_{(j)}-\bar{x}_{(j)})^2\\
+  x_{(j)}&代表了时间点 t_j 时死亡的个体，\\
+  \bar{x}_{(j)}& 代表了时间点 t_j 时仍然存活的个体。
+  \end{aligned}
+  $$
+
+  2 $\text{\small 检查残差中是否还含有解释变量的信息}\\\;(使用 W_j=Y_j-x_j^T\beta=\log(t_i)-x_j^T\beta 排序)$
+  $$
+  \begin{aligned}
+  H_0&:\beta=\beta_0\\
+  \cfrac{U^2}{V}&\backsim \chi^2_1\\
+  \end{aligned}
+  $$
