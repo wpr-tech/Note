@@ -571,6 +571,8 @@ $$
   \end{aligned}
   $$
 
+---
+
 ### <font color=Aqua>$\small Accelerated\ Failure\ Time\ Model$ \<AFT模型\></font>
 - $\text{AFT 假设:}$
   $\text{AFT模型直接对生存时间} T \text{进行建模。但时间为非负数据}\\\text{无法用线性回归直接建模。所以要对时间进行对数变换}\\ Y=\log T\\$
@@ -618,7 +620,7 @@ $$
 - $\varepsilon\backsim N(0,\sigma^2)$
   $\text{Lognormal-AFT Model}$
 
-####<font color=Chartreuse>$\small Semi\ Parametric\ AFT\ Model$\<AFT模型类型\></font>
+####<font color=Chartreuse>$\small Semi\ Parametric\ AFT\ Model$\<半参数AFT模型\></font>
 
 - <font color=Gold>$\text{保留线性部分的可解释性，放松残差(基线风险)的假设}$</font>
   - $\text{Rank Statistics (秩统计量)}$
@@ -649,3 +651,52 @@ $$
   \cfrac{U^2}{V}&\backsim \chi^2_1\\
   \end{aligned}
   $$
+
+---
+
+### <font color=Aqua>$\small Cox\ Regression\ Model$ \<Cox回归\></font>
+
+####<font color=Chartreuse>$\small Partial\ Likelihood$\<偏似然\></font>
+- $偏似然的出现是为了解决在不知道基线风险分布的情况下计算似然函数$
+- $
+  偏似然本质上与似然定义并不同：\\
+  \begin{cases}
+  \textcolor{gold}{Likelihood: } 在已知变量分布族的情况下，\\\qquad\quad求解在已知样本条件下出现概率最大的参数。\\
+  \textcolor{gold}{Partial\ Likelihood: } 在未知变量分布族的情况下，\\\qquad\quad通过归一化变量构造概率进行累乘。
+  \end{cases}\\
+  \begin{cases}
+  \textcolor{gold}{Likelihood: } L(\theta)=\prod_ip(x_i;\theta)\\
+  \textcolor{gold}{Partial\ Likelihood: } L(\theta)=\prod_iq(x_i;\theta)=\prod_i\cfrac{x_i}{\sum_kx_k}
+  \end{cases}
+  $
+- $Cox 回归的偏似然：$
+  $$
+  \begin{cases}
+  L(\beta)=\cfrac{\exp\{x_i^T\beta\}}{\sum_k\exp\{x_k^T\beta_i^T\beta\}}\quad\textcolor{chartreuse}{不考虑删失}\\
+  \\
+  L(\beta)=\cfrac{\exp\{x_i^T\beta\}}{\sum_{k\in R(t_i)}\exp\{x_k^T\beta\}}\quad\textcolor{chartreuse}{考虑删失}
+  \end{cases}
+  $$
+- $Cox 回归的NR-method：$
+  $$
+  \begin{aligned}
+  \hat{\beta}^{(r+1)}&\coloneqq\hat{\beta}^{(r+1)}(X^TWX)^{-1}X^T(d-Pd)\\
+  w_i&=\exp\{x_i^T\beta\}\\
+  \pi_{ij}&=\cfrac{T_i(t_j)w_i}{\sum_{k\in R(t_j)}^nY_k(t_j)w_k}=\cfrac{T_i(t_j)w_i}{\sum_{k=1}^nY_k(t_j)w_k}\\
+  P&=\{\pi_{ij}\}\\
+  W_{kk}&=-\sum_i\delta_i\pi_{ki}(1-\pi_{ki})\\
+  W_{kj}&=-\sum_i\delta_i\pi_{ki}\pi_{ji}
+  \end{aligned}
+  $$
+  $
+  \text{各参数意义：}\\
+  \begin{aligned}
+  Y_i(t_j)&: 是一个个体 i 在某时间 t_j 生存的 index\\
+  P&: 代表某个个体 i 在时间 t_j 时的相对死亡风险\\
+  &\quad因此我们只考虑还活着的个体\\
+  W_{kk}&: 代表个体的加权情况。每当一个其余个体i死亡，\\
+  &\quad如果k仍然存活(Y决定)，则其样本权重增加。\\
+  W_{kj}&: 代表个体k,j的交互情况。每当一个其余个体i死亡，\\
+  &\quad如果k,j仍然存活(Y决定)，其交互权重增加 
+  \end{aligned}
+  $
