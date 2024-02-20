@@ -195,8 +195,8 @@ $$
     \therefore\hat{S}(t_j)&=\prod_{j:\ t_j\leq t}(1-\hat{\lambda}_j)=\prod_{j:\ t_j\leq t}(1-\cfrac{d_j}{n_j})
   \end{aligned}
   $$
-- $\text{Kaplan Meier Estimator}$ 可以有另一种视角来解释，即 **<font color=Gold>$\text{MLE}$</font>** 。
-  在该视角下，似然函数最大时，$\hat{\lambda}_j\backsim B$
+- $\text{Kaplan Meier Estimator}$ 可以有另一种视角来解释，即 **<font color=Gold>$\text{MLE}$</font>** 
+  - 在该视角下，似然函数最大时，$\hat{\lambda}_j\backsim Binomial(n_j,p=\lambda_j)$
 
 ####<font color=Chartreuse>$\small Delta\ Method$</font>
 $Assume:\ \sqrt{n}(\hat{\lambda_j}-\lambda_j)\overset{d}{\longrightarrow} N(0,\sigma^2)\\
@@ -682,7 +682,7 @@ $$
   \begin{aligned}
   \hat{\beta}^{(r+1)}&\coloneqq\hat{\beta}^{(r+1)}(X^TWX)^{-1}X^T(d-Pd)\\
   w_i&=\exp\{x_i^T\beta\}\\
-  \pi_{ij}&=\cfrac{T_i(t_j)w_i}{\sum_{k\in R(t_j)}^nY_k(t_j)w_k}=\cfrac{T_i(t_j)w_i}{\sum_{k=1}^nY_k(t_j)w_k}\\
+  \pi_{ij}&=\cfrac{w_i}{\sum_{k\in R(t_j)}^nw_k}=\cfrac{Y_i(t_j)w_i}{\sum_{k=1}^nY_k(t_j)w_k}\\
   P&=\{\pi_{ij}\}\\
   W_{kk}&=-\sum_i\delta_i\pi_{ki}(1-\pi_{ki})\\
   W_{kj}&=-\sum_i\delta_i\pi_{ki}\pi_{ji}
@@ -691,7 +691,7 @@ $$
   $
   \text{各参数意义：}\\
   \begin{aligned}
-  Y_i(t_j)&: 是一个个体 i 在某时间 t_j 生存的 index\\
+  Y_i(t_j)&: 是一个个体 i 在某时间 t_j 生存的示性函数\\
   P&: 代表某个个体 i 在时间 t_j 时的相对死亡风险\\
   &\quad因此我们只考虑还活着的个体\\
   W_{kk}&: 代表个体的加权情况。每当一个其余个体i死亡，\\
@@ -700,3 +700,67 @@ $$
   &\quad如果k,j仍然存活(Y决定)，其交互权重增加 
   \end{aligned}
   $
+- $相关检验:$
+  $
+  \begin{aligned}
+  &\text{Wald:}\\
+  &\text{理论依据: } \hat{\beta}\overset{d}{\longrightarrow} N(\beta,(X^TWX)^{-1})\\
+  &\text{LRT: }\\
+  &\text{理论依据: } -2(l(\hat{\beta}_1)-l(\hat{\beta}_2))\overset{d}{\longrightarrow}\chi^2(\dim_{\hat{\beta}_1}-\dim_{\hat{\beta}_2})\\
+  &\text{Score-test: }\\
+  &U(\beta_0)^TI^{-1}(\beta_0)U(\beta_0)\overset{d}{\longrightarrow}\chi^2(p)\\
+  &\text{当 X 为分组变量时} \text{Score-test=Log-Rank test }
+  \end{aligned}
+  $
+</br>
+- $\text{拟合基线风险}$
+$
+\text{Lemma1: }\quad \color{aqua}{S_i(t)=S_0(t)^{\exp\{x_i^T\beta\}}}
+$
+$
+\because \lambda(t)=-\cfrac{d}{dt}\ln S(t)\quad
+\therefore
+\begin{cases}
+-\displaystyle\int\lambda_0(t)dt=\ln S_0(t)\\
+-\displaystyle\int\lambda_i(t)dt=\ln S_i(t)
+\end{cases}\\
+\because\lambda_i(t)=\lambda_0(t)e^{x_i^T\beta}\\
+\therefore\ln S_i(t)=-\displaystyle\int\lambda_i(t)e^{x_i^T\beta}dt=e^{x_i^T\beta}(-\displaystyle\int\lambda_0(t)dt)\\
+\therefore S_i(t)=\exp\Big\{-\displaystyle\int\lambda_0(t)dt\Big\}^{e^{x_i^T\beta}}=S_0(t)^{\exp\{x_i^T\beta\}}\;\Box
+\\\quad
+$
+$
+\text{Lemma2: }\quad \color{aqua}{\lambda_{ij}=1-(1-\lambda_{0j})^{\exp\{x_i^T\beta\}}}
+$
+$
+\because\text{离散假设下: } S(t)=\prod_{t\leq t_j}(1-\lambda_j)\\
+\because\text{由 Lemma1 可知: } S_i(t)=S_0(t)^{\exp\{x_i^T\beta\}}\\
+\therefore 1-\lambda_{ij}=(1-\lambda_{0j})^{\exp\{x_i^T\beta\}}\\
+\therefore\lambda_{ij}=1-(1-\lambda_{0j})^{\exp\{x_i^T\beta\}}\quad\Box
+\\\quad
+$
+$
+\text{Theory: } \color{aqua}S_i(t)=\prod_{t_i\leq t}\hat{\alpha}_j^{\exp\{x_i^T\beta\}}
+$
+$ 
+\begin{aligned}
+\because &L(\beta)=\prod_{j}\Big\{\prod_{i\in D_{j}}\lambda_{ij}\prod_{i\in R_j-D_j}(1-\lambda_{ij})\Big\}\\
+&\overset{\mathit{\alpha_j=1-\lambda_{0j}}\;\&\;Lemma2}{=\!=\!=\!=\!=\!=\!=\!=\!=\!=\!=}L(\beta)\prod_{j}\Big\{\prod_{i\in D_{j}}1-\alpha_j^{\exp\{x_i^T\beta\}}\prod_{i\in R_j-D_j}\alpha_j^{\exp\{x_i^T\beta\}}\Big\}\\
+&\implies\hat{\alpha}_j=(1-\pi_{jj})^{\frac{1}{\exp\{x_i^T\beta\}}}\text{ (无打结情况下)}\\
+&\implies S_i(t)=\prod_{t_i\leq t}\hat{\alpha}_j^{\exp\{x_i^T\beta\}}\quad\Box
+\end{aligned}
+$
+- $\text{Tie Problem 打结问题}$
+  - <font color=gold>若在一个时间点内有多个个体死亡，则称为打结问题。</font>
+  - $
+    \text{处理方法: }  
+    \begin{cases}
+    1 平均偏似然\\
+    2 Efron\\
+    3 Breslow
+    \end{cases}
+    $
+  - 若在一个时间点内有死亡个体过多，则考虑使用离散Cox回归
+    $$
+    \cfrac{\lambda_{ij}}{1-\lambda_{ij}}=\cfrac{\lambda_{0j}}{1-\lambda_{0j}}\exp\{x_i^T\beta\}
+    $$
